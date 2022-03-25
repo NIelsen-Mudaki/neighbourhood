@@ -4,10 +4,11 @@ from django.shortcuts import render, redirect, render_to_response, HttpResponseR
 from django.http import HttpResponse, Http404
 import datetime as dt
 from .models import *
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import logout
 from .forms import *
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def index(request):
@@ -15,14 +16,18 @@ def index(request):
 
 def register(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}')
-            return redirect('/')
-        
+        return redirect('login')
     else:
-        form = RegisterForm()
-    return render(request, 'registration/registration_form.html', {'form':form})
-    
+        form = UserCreationForm()
+    return render(request, 'registration/registration_form.html', locals())
+
+def login(request):
+    return render(request, 'registration/login.html')
+
+@login_required(login_url='/accounts/login')
+def logout_view(request):
+    logout(request)
+    return logout
