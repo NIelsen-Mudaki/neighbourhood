@@ -53,22 +53,18 @@
                 </li> -->
                 </ul>
             <ul>
-                <li class="dropdown list-unstyled text-white">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user"></i> My Account </a>
-                <ul class="dropdown-menu dropdown-default" role="menu">
                     <li>
-                        <a class="dropdown-item" href="{%url 'profile'%}">Profile</a>
+                        <a class="dropdown-item text-white" href="{%url 'profile'%}">Profile</a>
                     </li>
                     <li>
-                    <a class="dropdown-item" href="/accounts/password/change">Change Password</a>
+                    <a class="dropdown-item text-white" href="/accounts/password/change">Change Password</a>
                     </li>
                     <li>
-                    <a class="dropdown-item" href="/logout">Logout</a>
+                    <a class="dropdown-item text-white" href="/logout">Logout</a>
                     </li>
-                </ul>
-                </li>
             </ul>
             {% else %}
             <li class="list-unstyled">

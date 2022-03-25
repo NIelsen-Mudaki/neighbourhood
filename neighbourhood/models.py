@@ -1,5 +1,6 @@
+from PIL import Image
 from django.db import models
-from django.http import Http404,DoesNotExist
+from django.http import Http404
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 
@@ -12,11 +13,67 @@ class Neighborhood(models.Model):
     Admin = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     country = CountryField(blank_label='(select country)', default='KE')
 
+    def save_neighborhood(self):
+        self.save()
+    
+    def delete_neighborhood(self):
+        self.delete()
+        
+    @classmethod
+    def get_neighborhoods(cls):
+        projects = cls.objects.all()
+        return projects
+    
+    @classmethod
+    def search_neighborhoods(cls, search_term):
+        projects = cls.objects.filter(name__icontains=search_term)
+        return projects
+    
+    
+    @classmethod
+    def get_by_admin(cls, Admin):
+        projects = cls.objects.filter(Admin=Admin)
+        return projects
+    
+    
+    @classmethod
+    def get_neighborhood(request, neighborhood):
+        try:
+            project = Neighborhood.objects.get(pk = id)
+            
+        except DoesNotExist:
+            raise Http404()
+        
+        return project
+    
+    def __str__(self):
+        return self.name
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
     photo = models.ImageField(upload_to = 'profile_pics/', blank=True, default='profile_pics/default.jpg')
     neighborhood = models.ForeignKey(Neighborhood,on_delete=models.CASCADE, blank=True, default='1')
+
+    def save_profile(self):
+        self.save()
+        
+        img = Image.open(self.photo.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.photo.path)
+            
+
+    def delete_profile(self):
+        self.delete()
+    
+    def __str__(self):
+        return f"{self.user}, {self.bio}, {self.photo}"
+    
+    class Meta:
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profiles'
 
 class Posts(models.Model):
     post = models.TextField()
