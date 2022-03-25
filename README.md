@@ -28,7 +28,7 @@ As a user of the application you should be able to:
 * pip virtualenv
 * Cloning In your terminal:
 
-$ git clone: <https://github.com/NIelsen-Mudaki/gramclone.git>
+$ git clone: <https://github.com/NIelsen-Mudaki/neighbourhood.git>
 $ cd My-Gallery
 Running the Application
 Creating the virtual environment
