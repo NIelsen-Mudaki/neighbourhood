@@ -102,6 +102,9 @@ def profile(request):
 
     return render(request, 'profile.html', {"form":form, "form2":form2})
 
+def login(request):
+    return render(request, 'registration/login.html')
+
 @login_required(login_url='/accounts/login')
 def logout_view(request):
     logout(request)
